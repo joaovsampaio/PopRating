@@ -43,7 +43,7 @@ const getPost = cache(async (id: string) =>
   fetch(`/api/crud/${id}`).then((res) => res.json())
 );
 
-const page = ({ params }: { params: { id: string } }) => {
+const Page = ({ params }: { params: { id: string } }) => {
   const {
     register,
     handleSubmit,
@@ -302,4 +302,4 @@ const page = ({ params }: { params: { id: string } }) => {
   );
 };
 
-export default page;
+export default Page;

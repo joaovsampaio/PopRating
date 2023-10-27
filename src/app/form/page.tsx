@@ -9,7 +9,6 @@ import { useEffect, useRef, useState } from "react";
 import SelectCategory from "@/components/ui/Select";
 import dynamic from "next/dynamic";
 import CustomToast from "@/components/ui/Toast";
-import { Loader2 } from "lucide-react";
 import Loading from "@/components/ui/Loading";
 import BtnLogin from "@/components/ui/BtnLogin";
 import { useSession } from "next-auth/react";
@@ -38,7 +37,7 @@ const schema = z.object({
 });
 type FormData = z.infer<typeof schema>;
 
-const page = () => {
+const Page = () => {
   const {
     register,
     handleSubmit,
@@ -289,4 +288,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
