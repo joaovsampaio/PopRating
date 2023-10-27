@@ -12,11 +12,11 @@ function DropDown() {
       </DropdownMenu.Trigger>
 
       <DropdownMenu.Portal>
-        <DropdownMenu.Content className="bg-secondary border rounded-md border-purple-800 p-3 lg:hidden">
+        <DropdownMenu.Content className="bg-secondary border rounded-md border-darkPurple p-3 lg:hidden">
           <DropdownMenu.Item>
             <Nav />
           </DropdownMenu.Item>
-          <DropdownMenu.Arrow className="fill-purple-800" />
+          <DropdownMenu.Arrow className="fill-darkPurple" />
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
     </DropdownMenu.Root>

@@ -2,34 +2,34 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useSession, signIn } from "next-auth/react";
 
 const Nav = () => {
   const pathname = usePathname();
+  const { data: session } = useSession();
 
   return (
     <nav className="header-nav">
       <ul className="max-md:flex-col">
         <li>
-          <Link
-            href="/form/post-article"
-            className={pathname === "/form/post-article" ? "active" : ""}
-          >
+          <Link href="/form" className={pathname === "/form" ? "active" : ""}>
             Postar
           </Link>
         </li>
         <li>
-          <Link
-            href="/form/post-article"
-            className={pathname === "/form/post-article" ? "active" : ""}
-          >
-            Login
-          </Link>
+          {session ? (
+            <Link
+              href="/profile"
+              className={pathname === "/profile" ? "active" : ""}
+            >
+              Perfil
+            </Link>
+          ) : (
+            <a onClick={() => signIn("google")}>Login</a>
+          )}
         </li>
         <li>
-          <Link
-            href="/posts/reviews"
-            className={pathname === "/posts/reviews" ? "active" : ""}
-          >
+          <Link href="/posts" className={pathname === "/posts" ? "active" : ""}>
             Críticas
           </Link>
         </li>

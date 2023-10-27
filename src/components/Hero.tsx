@@ -5,10 +5,9 @@ import musician from "../../public/musician.jpg";
 import actress from "../../public/actress.jpg";
 import writer from "../../public/writer.jpg";
 import { motion } from "framer-motion";
-import { useState } from "react";
-import Card from "./ui/Card";
+import { useEffect, useState } from "react";
 import { ChevronRight } from "lucide-react";
-
+import SidePosts from "./SidePosts";
 const variants = {
   hidden: {
     display: "none",
@@ -28,11 +27,19 @@ const variants = {
 const Hero = () => {
   const [animStart, setAnimStart] = useState(false);
 
+  useEffect(() => {
+    if (!localStorage.heroOrPosts || localStorage.heroOrPosts === "hero") {
+      setAnimStart(false);
+    } else {
+      setAnimStart(true);
+    }
+  }, []);
+
   return (
     <>
       <motion.div
         variants={variants}
-        initial="visible"
+        initial={!animStart ? "visible" : "hidden"}
         animate={animStart ? "hidden" : "visible"}
         exit="exit"
         className="flex max-sm:items-center max-sm:flex-col max-sm:gap-5"
@@ -55,7 +62,10 @@ const Hero = () => {
               duration: 2,
             }}
             className="w-fit max-sm:self-center p-2 max-sm:text-base text-2xl bg-secondary rounded-sm hover:bg-darkPurple duration-500 border-light border-2"
-            onClick={() => setAnimStart(!animStart)}
+            onClick={() => {
+              localStorage.setItem("heroOrPosts", "posts");
+              setAnimStart(!animStart);
+            }}
           >
             Ver Mais <ChevronRight className="inline" />
           </motion.button>
@@ -85,38 +95,22 @@ const Hero = () => {
 
       <motion.div
         variants={variants}
-        initial="hidden"
-        exit="exit"
+        initial={animStart ? "visible" : "hidden"}
         animate={animStart ? "visible" : "hidden"}
+        exit="exit"
         className="flex flex-col"
       >
         <button
           className="w-fit mb-3 underline"
-          onClick={() => setAnimStart(!animStart)}
+          onClick={() => {
+            localStorage.setItem("heroOrPosts", "hero");
+            setAnimStart(!animStart);
+          }}
         >
           Voltar
         </button>
-        <div className="flex justify-between max-sm:items-center max-sm:flex-col gap-4 w-full">
-          <div className="flex flex-col w-2/5 h-full max-sm:w-full p-4 gap-4 rounded-lg bg-accent">
-            <div className="flex w-fit self-center py-3 px-2 justify-center items-center bg-primary rounded-bl-2xl rounded-tr-2xl">
-              <h2 className="font-medium uppercase text-2xl">
-                Últimas Notícia
-              </h2>
-            </div>
 
-            <Card />
-          </div>
-
-          <div className="flex flex-col w-2/5 h-full max-sm:w-full p-4 gap-4 rounded-lg bg-secondary">
-            <div className="flex w-fit self-center py-3 px-2 justify-center items-center bg-darkPurple rounded-bl-2xl rounded-tr-2xl">
-              <h2 className="font-medium uppercase text-2xl">
-                Principais Críticas
-              </h2>
-            </div>
-
-            <Card />
-          </div>
-        </div>
+        <SidePosts />
       </motion.div>
     </>
   );
