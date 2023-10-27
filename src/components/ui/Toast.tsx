@@ -48,4 +48,5 @@ function CustomToast({ title, description, open, setOpen, error }: Props) {
     </Toast.Provider>
   );
 }
+
 export default CustomToast;

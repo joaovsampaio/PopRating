@@ -64,4 +64,7 @@ const SelectItem = forwardRef(({ children, ...props }: any, forwardedRef) => {
   );
 });
 
+SelectCategory.displayName = "SelectCategory";
+SelectItem.displayName = "SelectItem";
+
 export default SelectCategory;
