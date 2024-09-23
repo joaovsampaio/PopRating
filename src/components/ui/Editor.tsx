@@ -1,12 +1,15 @@
-import { MutableRefObject } from "react";
-import { Editor, IAllProps } from "@tinymce/tinymce-react";
+"use client";
 
-type Props = IAllProps & {
-  editorRef: MutableRefObject<null>;
+import { useEditor, EditorContent, EditorContentProps } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+
+const Tiptap = () => {
+  const editor = useEditor({
+    extensions: [StarterKit],
+    content: "<p>Hello World! 🌎️</p>",
+  });
+
+  return <EditorContent editor={editor} />;
 };
 
-function WrappedEditor({ editorRef, ...props }: Props) {
-  return <Editor {...props} ref={editorRef} />;
-}
-
-export default WrappedEditor;
+export default Tiptap;

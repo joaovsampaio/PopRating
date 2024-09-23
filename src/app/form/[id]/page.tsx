@@ -7,17 +7,11 @@ import { StarRating } from "@/components/ui/StarRating";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import { cache, use, useEffect, useRef, useState } from "react";
 import SelectCategory from "@/components/ui/Select";
-import dynamic from "next/dynamic";
 import CustomToast from "@/components/ui/Toast";
-import { Loader2 } from "lucide-react";
 import { Post } from "@prisma/client";
 import Loading from "@/components/ui/Loading";
 import BtnLogin from "@/components/ui/BtnLogin";
 import { useSession } from "next-auth/react";
-
-const Editor = dynamic(() => import("@/components/ui/Editor"), {
-  ssr: false,
-});
 
 const schema = z.object({
   title: z.string().min(1, { message: "Esse Campo Deve Ser Preenchido" }),
@@ -63,7 +57,6 @@ const Page = ({ params }: { params: { id: string } }) => {
   const { data: session } = useSession();
 
   useEffect(() => clearErrors("category"), [watch("category")]);
-  const editorRef = useRef(null);
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
@@ -158,32 +151,12 @@ const Page = ({ params }: { params: { id: string } }) => {
             <label htmlFor="content" className="mt-5 mb-1 text-2xl">
               {watch("collection") === true ? "Matéria" : "Crítica"}
             </label>
-            <Editor
-              onChange={(_, editor) => setValue("content", editor.getContent())}
-              editorRef={editorRef}
-              initialValue={post.content}
-              init={{
-                height: 500,
-                menubar: false,
-                plugins: [
-                  "checklist",
-                  "lists",
-                  "link",
-                  "image",
-                  "preview",
-                  "searchreplace",
-                  "fullscreen",
-                  "insertdatetime",
-                  "media",
-                  "help",
-                  "code",
-                ],
-                toolbar:
-                  "undo redo | casechange blocks | bold italic backcolor | fullscreen preview|" +
-                  "alignleft aligncenter alignright alignjustify| " +
-                  "link media image | " +
-                  "bullist numlist checklist outdent indent | removeformat | searchreplace code help",
-              }}
+            <textarea
+              {...register("content")}
+              defaultValue={post.content}
+              id="content"
+              placeholder="Crítica"
+              className="border-primary rounded-sm border p-1 mt-2 text-2xl text-dark"
             />
             {errors.content?.message && (
               <span className="text-red-500">{errors.content?.message}</span>
