@@ -10,7 +10,7 @@ const Nav = () => {
 
   return (
     <nav className="header-nav">
-      <ul className="max-md:flex-col">
+      <ul className="flex-col lg:flex-row">
         <li>
           <Link href="/form" className={pathname === "/form" ? "active" : ""}>
             Postar

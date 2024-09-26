@@ -7,12 +7,12 @@ function DropDown() {
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
         <button aria-label="Menu">
-          <Menu className="h-6 w-6 text-primary" />
+          <Menu className="h-6 w-6 text-primary-500" />
         </button>
       </DropdownMenu.Trigger>
 
       <DropdownMenu.Portal>
-        <DropdownMenu.Content className="bg-secondary border rounded-md border-darkPurple p-3 lg:hidden">
+        <DropdownMenu.Content className="bg-secondary-900 border rounded-md border-darkPurple p-3 lg:hidden">
           <DropdownMenu.Item>
             <Nav />
           </DropdownMenu.Item>

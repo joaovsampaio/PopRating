@@ -35,10 +35,10 @@ const Header = () => {
             <Image alt="PopRating" src="/logo.svg" width={200} height={60} />
           </Link>
 
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <DropDown />
           </div>
-          <div className="max-md:hidden">
+          <div className="max-lg:hidden">
             <Nav />
           </div>
         </div>

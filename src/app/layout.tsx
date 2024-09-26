@@ -4,8 +4,12 @@ import { Poppins } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Providers from "@/components/Providers";
+import ReactQueryProvider from "@/lib/ReactQueryProvider";
 
-const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "800"] });
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
 
 export const metadata: Metadata = {
   title: "PopRating",
@@ -22,9 +26,11 @@ export default function RootLayout({
     <html lang="pt">
       <Providers>
         <body className={poppins.className}>
-          <Header />
-          {children}
-          <Footer />
+          <ReactQueryProvider>
+            <Header />
+            {children}
+            <Footer />
+          </ReactQueryProvider>
         </body>
       </Providers>
     </html>

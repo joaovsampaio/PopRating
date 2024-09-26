@@ -4,10 +4,12 @@ import Image from "next/image";
 import musician from "../../public/musician.jpg";
 import actress from "../../public/actress.jpg";
 import writer from "../../public/writer.jpg";
+import HeroText from "../../public/svg-hero-anim.svg";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { ChevronRight } from "lucide-react";
 import SidePosts from "./SidePosts";
+
 const variants = {
   hidden: {
     display: "none",
@@ -42,50 +44,61 @@ const Hero = () => {
         initial={!animStart ? "visible" : "hidden"}
         animate={animStart ? "hidden" : "visible"}
         exit="exit"
-        className="flex max-sm:items-center max-sm:flex-col max-sm:gap-5"
+        className="flex flex-col lg:flex-row items-center lg:items-stretch gap-8 lg:gap-0"
       >
-        <div className="flex flex-col justify-between w-1/2 max-sm:gap-5 lg:pr-3 max-sm:w-full">
-          <p className=" text-9xl max-lg:text-2xl max-[2500px]:text-5xl max-sm:text-center uppercase font-extrabold">
-            Estamos sempre <span className="text-primary">ouvindo</span>,{" "}
-            <span className="text-primary">vendo</span> e{" "}
-            <span className="text-primary">lendo</span> tudo da cultura pop para{" "}
-            <span className="text-primary">você</span>
+        <div className="flex flex-col items-center justify-between gap-8 lg:gap-0 lg:w-full">
+          <p className="text-2xl lg:text-3xl xl:text-5xl xl:leading-tight text-center lg:text-left uppercase font-extrabold tracking-wider">
+            Sempre <span className="text-primary-500">ouvindo</span>,{" "}
+            <span className="text-primary-500">assistindo</span> e{" "}
+            <span className="text-primary-500">lendo</span>
+            <span className="flex justify-center lg:justify-start">
+              <Image
+                className="w-36 lg:w-48 xl:w-72"
+                alt="Para Você"
+                src={HeroText}
+                quality={100}
+              />
+            </span>
           </p>
 
-          <motion.button
-            initial={{ x: 0 }}
-            animate={{ x: 10 }}
-            transition={{
-              repeat: Infinity,
-              type: "tween",
-              repeatType: "mirror",
-              duration: 2,
-            }}
-            className="w-fit max-sm:self-center p-2 max-sm:text-base text-2xl bg-secondary rounded-sm hover:bg-darkPurple duration-500 border-light border-2"
-            onClick={() => {
-              localStorage.setItem("heroOrPosts", "posts");
-              setAnimStart(!animStart);
-            }}
-          >
-            Ver Mais <ChevronRight className="inline" />
-          </motion.button>
+          <p className="text-center font-extralight lg:text-lg xl:text-2xl">
+            Plataforma Profissional de Críticas
+          </p>
+
+          <div className="w-fit relative z-20">
+            <div className="bg-primary-500 w-full h-full absolute -z-10 top-2 left-2" />
+            <motion.button
+              whileHover={{
+                y: -5,
+                x: -5,
+                transition: { ease: "easeOut", bounce: 0, duration: 0.3 },
+              }}
+              className="w-fit p-2 bg-accent-500/90 text-neutral-900 xl:text-2xl"
+              onClick={() => {
+                localStorage.setItem("heroOrPosts", "posts");
+                setAnimStart(!animStart);
+              }}
+            >
+              Veja Mais <ChevronRight className="inline" />
+            </motion.button>
+          </div>
         </div>
 
-        <div className="w-2/4 max-sm:w-full flex">
+        <div className="flex lg:w-full">
           <Image
-            className="w-1/3 border-8 max-sm:border-4 border-accent"
+            className="w-1/3 border-4 border-secondary-500"
             alt="Musician"
             src={musician}
             quality={100}
           />
           <Image
-            className="w-1/3 border-y-8 max-sm:border-y-4 border-accent"
+            className="w-1/3 border-y-4 border-secondary-500"
             alt="Actress"
             src={actress}
             quality={100}
           />
           <Image
-            className="w-1/3 border-8 max-sm:border-4 border-accent"
+            className="w-1/3 border-4 border-secondary-500"
             alt="Writer"
             src={writer}
             quality={100}

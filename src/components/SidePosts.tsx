@@ -2,71 +2,85 @@
 
 import { Post } from "prisma/prisma-client";
 import Card from "./ui/Card";
-import { cache, useEffect, useState } from "react";
-
-const getLatestPosts = cache(async () =>
-  fetch("/api/posts/latestPosts").then((res) => res.json())
-);
+import { cache } from "react";
+import { useQuery } from "@tanstack/react-query";
+import CardSkeleton from "./ui/CardSkeleton";
 
 const getTrendingPosts = cache(async () =>
   fetch("/api/posts/trendingPosts").then((res) => res.json())
 );
 
+const getLatestPosts = cache(async () =>
+  fetch("/api/posts/latestPosts").then((res) => res.json())
+);
+
 const SidePosts = () => {
-  const [latestPosts, setLatestPosts] = useState<Post[]>([]);
-  const [trendingPosts, setTrendingPosts] = useState<Post[]>([]);
+  const {
+    data: trendingPosts,
+    isLoading: isLoadingTrendingPosts,
+    isError,
+  } = useQuery<Post[]>({
+    queryFn: async () => await getTrendingPosts(),
+    queryKey: ["trendingPosts"],
+  });
 
-  const handleLatestPosts = async () => {
-    const data = await getLatestPosts();
-    return setLatestPosts(data);
-  };
+  const { data: latestPosts, isLoading: isLoadinglatestPosts } = useQuery<
+    Post[]
+  >({
+    queryFn: async () => await getLatestPosts(),
+    queryKey: ["latestPosts"],
+  });
 
-  const handleTrendingPosts = async () => {
-    const data = await getTrendingPosts();
-    return setTrendingPosts(data);
-  };
-
-  useEffect(() => {
-    handleLatestPosts();
-    handleTrendingPosts();
-  }, []);
+  if (isError) return <div>Sorry There was an Error</div>;
 
   return (
-    <div className="flex justify-between max-sm:items-center max-sm:flex-col gap-4 w-full">
-      <div className="flex flex-col w-2/5 h-full max-sm:w-full p-4 gap-4 rounded-lg bg-accent">
-        <div className="flex w-fit self-center py-3 px-2 justify-center items-center bg-primary rounded-bl-2xl rounded-tr-2xl">
-          <h2 className="font-medium uppercase text-2xl">Últimas Críticas</h2>
-        </div>
-
-        {latestPosts.map((item) => (
-          <Card
-            key={item.id}
-            link={item.id}
-            cover={item.cover}
-            title={item.title}
-            date={item.date}
-            category={item.category}
-          />
-        ))}
-      </div>
-
-      <div className="flex flex-col w-2/5 h-full max-sm:w-full p-4 gap-4 rounded-lg bg-secondary">
-        <div className="flex w-fit self-center py-3 px-2 justify-center items-center bg-darkPurple rounded-bl-2xl rounded-tr-2xl">
-          <h2 className="font-medium uppercase text-2xl">
+    <div className="flex lg:flex-row lg:justify-between lg:gap-0 lg:items-start items-center flex-col gap-4">
+      <div className="flex flex-col lg:w-2/5 w-full h-full p-4 gap-4 rounded-lg bg-gradient-to-b from-secondary-700 to-primary-500">
+        <div className="flex gap-2 bg-neutral-100/10 rounded-lg overflow-hidden">
+          <div className="w-2 h-auto bg-accent-500" />
+          <h2 className="font-medium uppercase text-lg py-1">
             Principais Críticas
           </h2>
         </div>
 
-        {trendingPosts.map((item) => (
-          <Card
-            key={item.id}
-            link={item.id}
-            cover={item.cover}
-            title={item.title}
-            date={item.date}
-            category={item.category}
-          />
-        ))}
+        {isLoadingTrendingPosts ? (
+          <CardSkeleton />
+        ) : (
+          trendingPosts?.map((item) => (
+            <Card
+              key={item.id}
+              link={item.id}
+              cover={item.cover}
+              title={item.title}
+              date={item.date}
+              category={item.category}
+            />
+          ))
+        )}
+      </div>
+
+      <div className="flex flex-col lg:w-2/5 w-full h-full p-4 gap-4 rounded-lg bg-gradient-to-b from-secondary-700 to-primary-500">
+        <div className="flex gap-2 bg-neutral-100/10 rounded-lg overflow-hidden">
+          <div className="w-2 h-auto bg-primary-500" />
+          <h2 className="font-medium uppercase text-lg py-1">
+            Últimas Críticas
+          </h2>
+        </div>
+
+        {isLoadinglatestPosts ? (
+          <CardSkeleton />
+        ) : (
+          latestPosts?.map((item) => (
+            <Card
+              key={item.id}
+              link={item.id}
+              cover={item.cover}
+              title={item.title}
+              date={item.date}
+              category={item.category}
+            />
+          ))
+        )}
       </div>
     </div>
   );
