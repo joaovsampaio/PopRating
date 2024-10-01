@@ -1,7 +1,7 @@
 "use client";
 
 import { signIn, signOut, useSession } from "next-auth/react";
-import { LogOut, User } from "lucide-react";
+import { LogOut as LogOutIcon, User as UserIcon } from "lucide-react";
 import Dialog from "./Dialog";
 
 const BtnLogin = () => {
@@ -21,17 +21,17 @@ const BtnLogin = () => {
           action={() => disconnect()}
           actionText="Sim, sair da conta."
         >
-          <button className="flex gap-2 items-center focus:outline-none bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 rounded-md text-sm px-5 py-2.5">
-            <LogOut />
+          <button className="flex gap-2 items-center focus:outline-none bg-error-600 hover:bg-error-500 focus:ring-4 focus:ring-red-300 rounded-md text-sm px-5 py-2.5">
+            <LogOutIcon />
             Sair da Conta
           </button>
         </Dialog>
       ) : (
         <button
           onClick={() => signIn("google")}
-          className="flex gap-2 items-center focus:outline-none bg-secondary hover:bg-secondary/80 focus:ring-4 focus:ring-secondary/50 rounded-md text-sm px-5 py-2.5"
+          className="flex gap-2 items-center focus:outline-none bg-secondary-500 hover:bg-secondary-700 focus:ring-4 focus:ring-secondary-900 rounded-md text-sm px-5 py-2.5"
         >
-          <User />
+          <UserIcon />
           Login
         </button>
       )}

@@ -9,8 +9,9 @@ import { useEffect, useState } from "react";
 import SelectCategory from "@/components/ui/Select";
 import CustomToast from "@/components/ui/Toast";
 import Loading from "@/components/ui/Loading";
-import BtnLogin from "@/components/ui/BtnLogin";
 import { useSession } from "next-auth/react";
+import NotUserAlert from "@/components/NotUserAlert";
+import { Input, TextArea } from "@/components/ui/Input";
 
 const schema = z.object({
   title: z.string().min(1, { message: "Esse Campo Deve Ser Preenchido" }),
@@ -72,23 +73,12 @@ const Page = () => {
     }
   };
 
-  if (!session?.user?.email) {
-    return (
-      <MaxWidthWrapper>
-        <div className="flex flex-col justify-center items-center gap-10 h-screen">
-          <p className="text-light/90 text-lg text-center font-medium">
-            É necessário uma conta
-          </p>
-          <BtnLogin />
-        </div>
-      </MaxWidthWrapper>
-    );
-  }
+  if (!session?.user?.email) return <NotUserAlert />;
 
   return (
     <main className="my-10">
       <MaxWidthWrapper className="flex flex-col items-center gap-10">
-        <div className="flex py-3 px-3 justify-center items-center bg-secondary rounded-bl-2xl rounded-tr-2xl">
+        <div className="flex py-3 px-3 justify-center items-center bg-secondary-500 rounded-bl-2xl rounded-tr-2xl">
           <h1 className="text-3xl font-medium uppercase">Novo Artigo</h1>
         </div>
 
@@ -100,12 +90,7 @@ const Page = () => {
             <label className="mb-1 text-2xl" htmlFor="title">
               Insira um título
             </label>
-            <input
-              {...register("title")}
-              id="title"
-              placeholder="título"
-              className="border-primary rounded-sm border p-1 mt-2 text-2xl text-dark"
-            />
+            <Input {...register("title")} id="title" placeholder="título" />
             {errors.title?.message && (
               <span className="text-red-500">{errors.title?.message}</span>
             )}
@@ -113,11 +98,11 @@ const Page = () => {
             <label className="mt-5 mb-1 text-2xl" htmlFor="cover">
               Capa da matéria
             </label>
-            <input
+            <Input
               {...register("cover")}
               id="cover"
               placeholder="url"
-              className="border-primary rounded-sm border p-1 mt-2 text-2xl text-dark"
+              type="url"
             />
             {errors.cover?.message && (
               <span className="text-red-500">{errors.cover?.message}</span>
@@ -142,11 +127,10 @@ const Page = () => {
             <label htmlFor="content" className="mt-5 mb-1 text-2xl">
               {watch("collection") === true ? "Matéria" : "Crítica"}
             </label>
-            <textarea
+            <TextArea
               {...register("content")}
               id="content"
               placeholder="Crítica"
-              className="min-h-[400px] border-primary rounded-sm border p-1 mt-2 text-2xl text-dark"
             />
             {errors.content?.message && (
               <span className="text-red-500">{errors.content?.message}</span>
@@ -156,13 +140,13 @@ const Page = () => {
               <legend className="text-2xl mb-2">Coleção</legend>
 
               <div>
-                <input
+                <Input
                   onClick={() => setValue("collection", false)}
                   value="no"
                   id="no"
                   type="radio"
                   name="collection"
-                  className="h-4 w-4 border-primary focus:ring-2 focus:ring-primary"
+                  className="h-4 w-4 accent-primary-500 focus:ring-2 focus:ring-primary"
                   defaultChecked
                 />
                 <label
@@ -173,13 +157,13 @@ const Page = () => {
                 </label>
               </div>
               <div>
-                <input
+                <Input
                   onClick={() => setValue("collection", true)}
                   value="yes"
                   id="yes"
                   type="radio"
                   name="collection"
-                  className="h-4 w-4 border-primary focus:ring-2 focus:ring-primary"
+                  className="h-4 w-4 accent-primary-500 focus:ring-2 focus:ring-primary"
                 />
                 <label
                   htmlFor="yes"
@@ -206,13 +190,13 @@ const Page = () => {
               <legend className="text-2xl mb-2">Publicar agora?</legend>
 
               <div>
-                <input
+                <Input
                   onClick={() => setValue("published", false)}
                   value="no"
                   id="no"
                   type="radio"
                   name="published"
-                  className="h-4 w-4 border-primary focus:ring-2 focus:ring-primary"
+                  className="h-4 w-4 accent-primary-500 focus:ring-2 focus:ring-primary"
                   defaultChecked
                 />
                 <label
@@ -223,13 +207,13 @@ const Page = () => {
                 </label>
               </div>
               <div>
-                <input
+                <Input
                   onClick={() => setValue("published", true)}
                   value="yes"
                   id="yes"
                   type="radio"
                   name="published"
-                  className="h-4 w-4 border-primary focus:ring-2 focus:ring-primary"
+                  className="h-4 w-4 accent-primary-500 focus:ring-2 focus:ring-primary"
                 />
                 <label
                   htmlFor="yes"

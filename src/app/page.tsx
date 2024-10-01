@@ -1,11 +1,16 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import Hero from "@/components/Hero";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import SidePosts from "@/components/SidePosts";
 
-export default function Home() {
+export default async function Home() {
+  const session = await getServerSession(authOptions);
+
   return (
     <main className="home-bg flex-1 flex items-center">
       <MaxWidthWrapper className="w-full py-5">
-        <Hero />
+        {!session ? <Hero /> : <SidePosts />}
       </MaxWidthWrapper>
     </main>
   );

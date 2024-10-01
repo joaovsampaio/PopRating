@@ -18,8 +18,8 @@ function CustomToast({ title, description, open, setOpen, error }: Props) {
     <Toast.Provider swipeDirection="right">
       <Toast.Root
         className={cn(
-          "bg-primary rounded-md shadow-md shadow-slate-800 p-2",
-          error && "bg-red-500"
+          "bg-primary-600 rounded-md shadow-md shadow-neutral-800 p-2",
+          error && "bg-error-600"
         )}
         open={open}
         onOpenChange={setOpen}
@@ -27,20 +27,22 @@ function CustomToast({ title, description, open, setOpen, error }: Props) {
       >
         <Toast.Title
           className={cn(
-            "text-light text-2xl font-medium",
-            error && "text-light"
+            "text-neutral-100 text-2xl font-semibold",
+            error && "text-neutral-100"
           )}
         >
           {!error ? (
             title
           ) : (
             <span className="flex items-center gap-2">
-              <AlertTriangle className="h-8 w-8 text-light" />
+              <AlertTriangle className="h-8 w-8 text-neutral-100" />
               Algo Deu Errado
             </span>
           )}
         </Toast.Title>
-        <Toast.Description className={cn("text-light/90", error && "hidden")}>
+        <Toast.Description
+          className={cn("text-neutral-100", error && "hidden")}
+        >
           {description}
         </Toast.Description>
       </Toast.Root>

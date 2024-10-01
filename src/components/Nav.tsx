@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession, signIn } from "next-auth/react";
+import Dialog from "./ui/Dialog";
 
 const Nav = () => {
   const pathname = usePathname();
@@ -12,9 +13,21 @@ const Nav = () => {
     <nav className="header-nav">
       <ul className="flex-col lg:flex-row">
         <li>
-          <Link href="/form" className={pathname === "/form" ? "active" : ""}>
-            Postar
-          </Link>
+          {session ? (
+            <Link href="/form" className={pathname === "/form" ? "active" : ""}>
+              Postar
+            </Link>
+          ) : (
+            <Dialog
+              title="Conta Necessária!"
+              description="É necessário uma conta para fazer uma postagem."
+              action={() => signIn("google")}
+              actionText="Fazer Login"
+              actionButtonStyle="bg-primary-500 text-neutral-100 hover:bg-primary-700"
+            >
+              <a href="#">Postar</a>
+            </Dialog>
+          )}
         </li>
         <li>
           {session ? (

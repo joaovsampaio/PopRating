@@ -1,18 +1,25 @@
 "use client";
 
-import { Post } from "prisma/prisma-client";
-import Card from "./ui/Card";
 import { cache } from "react";
+import { Post } from "prisma/prisma-client";
 import { useQuery } from "@tanstack/react-query";
+import Card from "./ui/Card";
 import CardSkeleton from "./ui/CardSkeleton";
+import ErrorToFetch from "./ErrorToFetch";
 
-const getTrendingPosts = cache(async () =>
-  fetch("/api/posts/trendingPosts").then((res) => res.json())
-);
+const getTrendingPosts = cache(async () => {
+  let data = await fetch("/api/posts/trendingPosts");
+  let posts = await data.json();
 
-const getLatestPosts = cache(async () =>
-  fetch("/api/posts/latestPosts").then((res) => res.json())
-);
+  return posts;
+});
+
+const getLatestPosts = cache(async () => {
+  let data = await fetch("/api/posts/latestPosts");
+  let posts = await data.json();
+
+  return posts;
+});
 
 const SidePosts = () => {
   const {
@@ -22,6 +29,7 @@ const SidePosts = () => {
   } = useQuery<Post[]>({
     queryFn: async () => await getTrendingPosts(),
     queryKey: ["trendingPosts"],
+    retry: 5,
   });
 
   const { data: latestPosts, isLoading: isLoadinglatestPosts } = useQuery<
@@ -29,9 +37,10 @@ const SidePosts = () => {
   >({
     queryFn: async () => await getLatestPosts(),
     queryKey: ["latestPosts"],
+    retry: 5,
   });
 
-  if (isError) return <div>Sorry There was an Error</div>;
+  if (isError) return <ErrorToFetch />;
 
   return (
     <div className="flex lg:flex-row lg:justify-between lg:gap-0 lg:items-start items-center flex-col gap-4">

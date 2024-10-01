@@ -1,7 +1,7 @@
 const CardSkeleton = () => {
   return (
     <>
-      {Array.from({ length: 5 }, (_, i) => i + 1).map((id) => (
+      {Array.from({ length: 6 }, (_, i) => i + 1).map((id) => (
         <div
           key={id}
           className="animate-pulse bg-neutral-800 aspect-video overflow-hidden shrink-0 cursor-pointer shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] rounded-3xl"

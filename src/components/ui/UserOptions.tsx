@@ -26,19 +26,20 @@ const UserOptions = ({ id }: Props) => {
         action={() => deletePost()}
         actionText="Sim, deletar crítica."
       >
-        <button title="Exluir">
-          <Trash
-            aria-hidden={true}
-            className="text-red-600 hover:bg-red-300 rounded-full"
-          />
+        <button
+          title="Exluir"
+          className="text-error-600 hover:bg-error-500/20 p-2 rounded-full"
+        >
+          <Trash aria-hidden={true} />
         </button>
       </Dialog>
 
-      <button title="Editar" onClick={() => editPost()}>
-        <Pencil
-          aria-hidden={true}
-          className="text-accent hover:bg-accent/50 rounded-full"
-        />
+      <button
+        title="Editar"
+        onClick={() => editPost()}
+        className="text-accent-500 hover:bg-accent-500/20 p-2 rounded-full"
+      >
+        <Pencil aria-hidden={true} />
       </button>
     </div>
   );

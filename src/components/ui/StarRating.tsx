@@ -34,15 +34,15 @@ export const StarRating = ({ setStarRating, postRating }: StarRatingProps) => {
               <Star
                 className={
                   index <= (hover || rating)
-                    ? "text-primary fill-primary"
-                    : "text-primary "
+                    ? "text-primary-500 fill-primary-500"
+                    : "text-primary-500"
                 }
               />
             </span>
           </button>
         );
       })}
-      <p className="text-slate-400 max-lg:hidden">
+      <p className="text-neutral-400 max-lg:hidden">
         Clique duplo na estrela zera
       </p>
       <button
@@ -51,7 +51,7 @@ export const StarRating = ({ setStarRating, postRating }: StarRatingProps) => {
           setRating(0);
           setHover(0);
         }}
-        className="text-slate-400 block lg:hidden"
+        className="text-neutral-400 block lg:hidden"
       >
         Zerar Estrelas
       </button>
@@ -79,8 +79,8 @@ export const StarPost = ({ getRating }: StarPost) => {
               <Star
                 className={
                   index <= (hover || rating)
-                    ? "text-primary fill-primary"
-                    : "text-primary"
+                    ? "text-primary-500 fill-primary-500"
+                    : "text-primary-500"
                 }
               />
             </span>

@@ -1,17 +1,17 @@
 "use client";
 
 import * as z from "zod";
+import { cache, use, useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useSession } from "next-auth/react";
+import { Post } from "@prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { StarRating } from "@/components/ui/StarRating";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
-import { cache, use, useEffect, useRef, useState } from "react";
 import SelectCategory from "@/components/ui/Select";
 import CustomToast from "@/components/ui/Toast";
-import { Post } from "@prisma/client";
 import Loading from "@/components/ui/Loading";
-import BtnLogin from "@/components/ui/BtnLogin";
-import { useSession } from "next-auth/react";
+import NotUserAlert from "@/components/NotUserAlert";
 
 const schema = z.object({
   title: z.string().min(1, { message: "Esse Campo Deve Ser Preenchido" }),
@@ -79,23 +79,12 @@ const Page = ({ params }: { params: { id: string } }) => {
     }
   };
 
-  if (!session?.user?.email) {
-    return (
-      <MaxWidthWrapper>
-        <div className="flex flex-col justify-center items-center gap-10 h-screen">
-          <p className="text-light/90 text-lg text-center font-medium">
-            É necessário uma conta
-          </p>
-          <BtnLogin />
-        </div>
-      </MaxWidthWrapper>
-    );
-  }
+  if (!session?.user?.email) return <NotUserAlert />;
 
   return (
     <main className="my-10">
       <MaxWidthWrapper className="flex flex-col items-center gap-10">
-        <div className="flex py-3 px-3 justify-center items-center bg-secondary rounded-bl-2xl rounded-tr-2xl">
+        <div className="flex py-3 px-3 justify-center items-center bg-secondary-500 rounded-bl-2xl rounded-tr-2xl">
           <h1 className="text-3xl font-medium uppercase">Editar Artigo</h1>
         </div>
 

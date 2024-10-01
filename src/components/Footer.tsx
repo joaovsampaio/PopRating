@@ -7,7 +7,7 @@ function Footer() {
       <MaxWidthWrapper>
         <span>Criado por:</span>
         <Link
-          className="text-accent hover:underline hover:text-accent/50 ml-1"
+          className="text-accent-500 hover:underline hover:text-accent-700 ml-1"
           href="https://github.com/joaovsampaio"
           target="_blank"
         >
