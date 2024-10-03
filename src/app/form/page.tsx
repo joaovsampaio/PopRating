@@ -1,7 +1,7 @@
 "use client";
 
 import * as z from "zod";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { StarRating } from "@/components/ui/StarRating";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
@@ -11,7 +11,12 @@ import CustomToast from "@/components/ui/Toast";
 import Loading from "@/components/ui/Loading";
 import { useSession } from "next-auth/react";
 import NotUserAlert from "@/components/NotUserAlert";
-import { Input, TextArea } from "@/components/ui/Input";
+import { Input } from "@/components/ui/Input";
+import dynamic from "next/dynamic";
+
+const CustomEditor = dynamic(() => import("@/components/ui/CustomEditor"), {
+  ssr: false,
+});
 
 const schema = z.object({
   title: z.string().min(1, { message: "Esse Campo Deve Ser Preenchido" }),
@@ -41,6 +46,7 @@ const Page = () => {
     setValue,
     getValues,
     watch,
+    control,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
@@ -55,6 +61,7 @@ const Page = () => {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
       setIsLoading(true);
+
       await fetch("/api/crud/create", {
         body: JSON.stringify(data),
         headers: {
@@ -86,13 +93,13 @@ const Page = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col items-center w-full"
         >
-          <div className="flex flex-col w-2/4 max-lg:w-11/12">
+          <div className="flex flex-col w-11/12 lg:w-10/12">
             <label className="mb-1 text-2xl" htmlFor="title">
               Insira um título
             </label>
             <Input {...register("title")} id="title" placeholder="título" />
             {errors.title?.message && (
-              <span className="text-red-500">{errors.title?.message}</span>
+              <span className="text-error-500">{errors.title?.message}</span>
             )}
 
             <label className="mt-5 mb-1 text-2xl" htmlFor="cover">
@@ -105,7 +112,7 @@ const Page = () => {
               type="url"
             />
             {errors.cover?.message && (
-              <span className="text-red-500">{errors.cover?.message}</span>
+              <span className="text-error-500">{errors.cover?.message}</span>
             )}
 
             <div className="flex flex-col w-fit">
@@ -120,20 +127,24 @@ const Page = () => {
               />
 
               {errors.category?.message && (
-                <span className="text-red-500">{errors.category?.message}</span>
+                <span className="text-error-500">
+                  {errors.category?.message}
+                </span>
               )}
             </div>
 
             <label htmlFor="content" className="mt-5 mb-1 text-2xl">
               {watch("collection") === true ? "Matéria" : "Crítica"}
             </label>
-            <TextArea
-              {...register("content")}
-              id="content"
-              placeholder="Crítica"
+            <Controller
+              name="content"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <CustomEditor value={value} onChange={onChange} />
+              )}
             />
             {errors.content?.message && (
-              <span className="text-red-500">{errors.content?.message}</span>
+              <span className="text-error-500">{errors.content?.message}</span>
             )}
 
             <fieldset className="flex flex-col mt-5 gap-1">
@@ -151,7 +162,7 @@ const Page = () => {
                 />
                 <label
                   htmlFor="no"
-                  className="text-light text-base font-medium ml-2"
+                  className="text-neutral-100 text-base font-medium ml-2"
                 >
                   Não
                 </label>
@@ -167,7 +178,7 @@ const Page = () => {
                 />
                 <label
                   htmlFor="yes"
-                  className="text-light text-base font-medium ml-2"
+                  className="text-neutral-100 text-base font-medium ml-2"
                 >
                   Sim
                 </label>
@@ -201,7 +212,7 @@ const Page = () => {
                 />
                 <label
                   htmlFor="no"
-                  className="text-light text-base font-medium ml-2"
+                  className="text-neutral-100 text-base font-medium ml-2"
                 >
                   Não
                 </label>
@@ -217,7 +228,7 @@ const Page = () => {
                 />
                 <label
                   htmlFor="yes"
-                  className="text-light text-base font-medium ml-2"
+                  className="text-neutral-100 text-base font-medium ml-2"
                 >
                   Sim
                 </label>
@@ -225,7 +236,7 @@ const Page = () => {
             </fieldset>
 
             <button
-              className="bg-primary hover:bg-primary/80 text-lg flex justify-center self-center w-1/3 py-1 my-5 rounded-lg disabled:cursor-not-allowed disabled:bg-primary/80"
+              className="bg-primary-500 hover:bg-primary-700 text-lg flex justify-center self-center w-1/3 py-1 my-5 rounded-lg disabled:cursor-not-allowed disabled:bg-primary-800"
               disabled={isloading}
               type="submit"
             >

@@ -82,7 +82,7 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background-color: hsl(var(--clr-darkPurple));
 }
 
 ::-webkit-scrollbar-thumb {
@@ -91,7 +91,7 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--clr-secondary-500) / 0.5);
+  background: hsl(var(--clr-secondary-700));
 }
 
 /* Navbar */
@@ -116,9 +116,9 @@ li {
   color: hsl(var(--clr-neutral-100));
 }
 
-@media (max-width: 768px) {
+@media (min-width: 1440px) {
   .header-nav ul li a {
-    font-size: 1rem;
+    font-size: 1.5rem;
   }
 }
 
@@ -154,4 +154,20 @@ li {
 
 .card-animation:hover {
   background-size: 110%;
+}
+
+/* CKEditor */
+
+.ck-editor__editable {
+  border-color: hsl(var(--clr-primary-500)) !important;
+  background-color: hsl(var(--clr-neutral-100)) !important;
+  color: hsl(var(--clr-neutral-900)) !important;
+  height: 400px !important;
+}
+
+.ck-source-editing-area {
+  border-color: hsl(var(--clr-primary-500)) !important;
+  background-color: hsl(var(--clr-neutral-100)) !important;
+  color: hsl(var(--clr-neutral-900)) !important;
+  height: 400px !important;
 }

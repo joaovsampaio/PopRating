@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 import { cache, use, useEffect, useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import { Post } from "@prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,6 +12,12 @@ import SelectCategory from "@/components/ui/Select";
 import CustomToast from "@/components/ui/Toast";
 import Loading from "@/components/ui/Loading";
 import NotUserAlert from "@/components/NotUserAlert";
+import { Input } from "@/components/ui/Input";
+import dynamic from "next/dynamic";
+
+const CustomEditor = dynamic(() => import("@/components/ui/CustomEditor"), {
+  ssr: false,
+});
 
 const schema = z.object({
   title: z.string().min(1, { message: "Esse Campo Deve Ser Preenchido" }),
@@ -45,6 +51,7 @@ const Page = ({ params }: { params: { id: string } }) => {
     setValue,
     getValues,
     watch,
+    control,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
@@ -61,6 +68,7 @@ const Page = ({ params }: { params: { id: string } }) => {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
       setIsLoading(true);
+
       await fetch(`/api/crud/${params.id}`, {
         body: JSON.stringify(data),
         headers: {
@@ -92,33 +100,32 @@ const Page = ({ params }: { params: { id: string } }) => {
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col items-center w-full"
         >
-          <div className="flex flex-col w-2/4 max-lg:w-11/12">
+          <div className="flex flex-col w-11/12 lg:w-10/12">
             <label className="mb-1 text-2xl" htmlFor="title">
               Insira um título
             </label>
-            <input
+            <Input
               {...register("title")}
               id="title"
               placeholder="título"
               defaultValue={post.title}
-              className="border-primary rounded-sm border p-1 mt-2 text-2xl text-dark"
             />
             {errors.title?.message && (
-              <span className="text-red-500">{errors.title?.message}</span>
+              <span className="text-error-500">{errors.title?.message}</span>
             )}
 
             <label className="mt-5 mb-1 text-2xl" htmlFor="cover">
               Capa da matéria
             </label>
-            <input
+            <Input
               {...register("cover")}
               defaultValue={post.cover}
               id="cover"
               placeholder="url"
-              className="border-primary rounded-sm border p-1 mt-2 text-2xl text-dark"
+              type="url"
             />
             {errors.cover?.message && (
-              <span className="text-red-500">{errors.cover?.message}</span>
+              <span className="text-error-500">{errors.cover?.message}</span>
             )}
 
             <div className="flex flex-col w-fit">
@@ -133,57 +140,63 @@ const Page = ({ params }: { params: { id: string } }) => {
               />
 
               {errors.category?.message && (
-                <span className="text-red-500">{errors.category?.message}</span>
+                <span className="text-error-500">
+                  {errors.category?.message}
+                </span>
               )}
             </div>
 
             <label htmlFor="content" className="mt-5 mb-1 text-2xl">
               {watch("collection") === true ? "Matéria" : "Crítica"}
             </label>
-            <textarea
-              {...register("content")}
-              defaultValue={post.content}
-              id="content"
-              placeholder="Crítica"
-              className="border-primary rounded-sm border p-1 mt-2 text-2xl text-dark"
+            <Controller
+              name="content"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <CustomEditor
+                  value={value}
+                  onChange={onChange}
+                  defaultValue={post.content}
+                />
+              )}
             />
             {errors.content?.message && (
-              <span className="text-red-500">{errors.content?.message}</span>
+              <span className="text-error-500">{errors.content?.message}</span>
             )}
 
             <fieldset className="flex flex-col mt-5 gap-1">
               <legend className="text-2xl mb-2">Coleção</legend>
 
               <div>
-                <input
+                <Input
                   onClick={() => setValue("collection", false)}
                   value="no"
                   id="no"
                   type="radio"
                   name="collection"
-                  className="h-4 w-4 border-primary focus:ring-2 focus:ring-primary"
+                  className="h-4 w-4 accent-primary-500 focus:ring-2 focus:ring-primary"
                   defaultChecked={!post.collection && true}
                 />
                 <label
                   htmlFor="no"
-                  className="text-light text-base font-medium ml-2"
+                  className="text-neutral-100 text-base font-medium ml-2"
                 >
                   Não
                 </label>
               </div>
               <div>
-                <input
+                <Input
                   onClick={() => setValue("collection", true)}
                   value="yes"
                   id="yes"
                   type="radio"
                   name="collection"
-                  className="h-4 w-4 border-primary focus:ring-2 focus:ring-primary"
+                  className="h-4 w-4 accent-primary-500 focus:ring-2 focus:ring-primary"
                   defaultChecked={post.collection && true}
                 />
                 <label
                   htmlFor="yes"
-                  className="text-light text-base font-medium ml-2"
+                  className="text-neutral-100 text-base font-medium ml-2"
                 >
                   Sim
                 </label>
@@ -207,35 +220,35 @@ const Page = ({ params }: { params: { id: string } }) => {
               <legend className="text-2xl mb-2">Publicar agora?</legend>
 
               <div>
-                <input
+                <Input
                   onClick={() => setValue("published", false)}
                   value="no"
                   id="no"
                   type="radio"
                   name="published"
-                  className="h-4 w-4 border-primary focus:ring-2 focus:ring-primary"
+                  className="h-4 w-4 accent-primary-500 focus:ring-2 focus:ring-primary"
                   defaultChecked={!post.published && true}
                 />
                 <label
                   htmlFor="no"
-                  className="text-light text-base font-medium ml-2"
+                  className="text-neutral-100 text-base font-medium ml-2"
                 >
                   Não
                 </label>
               </div>
               <div>
-                <input
+                <Input
                   onClick={() => setValue("published", true)}
                   value="yes"
                   id="yes"
                   type="radio"
                   name="published"
-                  className="h-4 w-4 border-primary focus:ring-2 focus:ring-primary"
+                  className="h-4 w-4 accent-primary-500 focus:ring-2 focus:ring-primary"
                   defaultChecked={post.published && true}
                 />
                 <label
                   htmlFor="yes"
-                  className="text-light text-base font-medium ml-2"
+                  className="text-neutral-100 text-base font-medium ml-2"
                 >
                   Sim
                 </label>
@@ -243,7 +256,7 @@ const Page = ({ params }: { params: { id: string } }) => {
             </fieldset>
 
             <button
-              className="bg-primary hover:bg-primary/80 text-lg flex justify-center self-center w-1/3 py-1 my-5 rounded-lg disabled:cursor-not-allowed disabled:bg-primary/80"
+              className="bg-primary-500 hover:bg-primary-700 text-lg flex justify-center self-center w-1/3 py-1 my-5 rounded-lg disabled:cursor-not-allowed disabled:bg-primary-800"
               disabled={isloading}
               type="submit"
             >

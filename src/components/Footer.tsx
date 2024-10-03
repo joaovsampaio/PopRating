@@ -3,7 +3,7 @@ import MaxWidthWrapper from "./MaxWidthWrapper";
 
 function Footer() {
   return (
-    <footer className="text-2xl max-sm:text-lg mt-auto">
+    <footer className="text-lg max-sm:text-lg mt-auto">
       <MaxWidthWrapper>
         <span>Criado por:</span>
         <Link
