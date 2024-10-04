@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { cache } from "react";
 
 const getAllPosts = cache(async () => {
-  let data = await fetch("/api/posts/posts");
+  let data = await fetch("/api/posts/allPosts");
   let posts = await data.json();
 
   return posts;

@@ -14,7 +14,7 @@ const UserOptions = ({ id }: Props) => {
   };
 
   const editPost = async (): Promise<void> => {
-    window.location.href = `/form/${id}`;
+    window.location.href = `/protected/form/${id}`;
   };
 
   return (

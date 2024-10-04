@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/db/index";
 
 export async function GET() {
-  const posts = await prisma.post.findMany({
+  const allPosts = await prisma.post.findMany({
     where: {
       published: true,
     },
@@ -14,5 +14,5 @@ export async function GET() {
     },
   });
 
-  return NextResponse.json(posts);
+  return NextResponse.json(allPosts);
 }

@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import Card from "./ui/Card";
 import CardSkeleton from "./ui/CardSkeleton";
 import ErrorToFetch from "./ErrorToFetch";
+import { motion } from "framer-motion";
 
 const getTrendingPosts = cache(async () => {
   let data = await fetch("/api/posts/trendingPosts");
@@ -20,6 +21,11 @@ const getLatestPosts = cache(async () => {
 
   return posts;
 });
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 100 },
+  visible: { opacity: 1, y: 0 },
+};
 
 const SidePosts = () => {
   const {
@@ -56,14 +62,23 @@ const SidePosts = () => {
           <CardSkeleton />
         ) : (
           trendingPosts?.map((item) => (
-            <Card
+            <motion.div
               key={item.id}
-              link={item.id}
-              cover={item.cover}
-              title={item.title}
-              date={item.date}
-              category={item.category}
-            />
+              variants={cardVariants}
+              initial="hidden"
+              animate="visible"
+              transition={{ type: "spring", duration: 0.8 }}
+            >
+              <motion.div>
+                <Card
+                  link={item.id}
+                  cover={item.cover}
+                  title={item.title}
+                  date={item.date}
+                  category={item.category}
+                />
+              </motion.div>
+            </motion.div>
           ))
         )}
       </div>
@@ -80,14 +95,22 @@ const SidePosts = () => {
           <CardSkeleton />
         ) : (
           latestPosts?.map((item) => (
-            <Card
+            <motion.div
               key={item.id}
-              link={item.id}
-              cover={item.cover}
-              title={item.title}
-              date={item.date}
-              category={item.category}
-            />
+              variants={cardVariants}
+              initial="hidden"
+              animate="visible"
+              transition={{ type: "spring", duration: 0.8 }}
+            >
+              <Card
+                key={item.id}
+                link={item.id}
+                cover={item.cover}
+                title={item.title}
+                date={item.date}
+                category={item.category}
+              />
+            </motion.div>
           ))
         )}
       </div>

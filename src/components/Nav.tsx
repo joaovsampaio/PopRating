@@ -14,7 +14,10 @@ const Nav = () => {
       <ul className="flex-col lg:flex-row">
         <li>
           {session ? (
-            <Link href="/form" className={pathname === "/form" ? "active" : ""}>
+            <Link
+              href="/protected/form"
+              className={pathname === "/form" ? "active" : ""}
+            >
               Postar
             </Link>
           ) : (
@@ -32,7 +35,7 @@ const Nav = () => {
         <li>
           {session ? (
             <Link
-              href="/profile"
+              href="/protected/profile"
               className={pathname === "/profile" ? "active" : ""}
             >
               Perfil

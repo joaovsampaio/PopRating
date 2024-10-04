@@ -8,19 +8,23 @@ type Props = {
   category: string;
   date: string;
   className?: string;
+  disabled?: boolean;
 };
 
 const Card = ({ ...props }: Props) => {
   return (
     <Link
-      href={`posts/${props.link}`}
+      href={`/posts/${props.link}`}
       className={"flex justify-center w-full text-current no-underline"}
     >
       <article
         style={{
           backgroundImage: `url(${props.cover})`,
         }}
-        className="card-animation aspect-video w-full max-w-[800px] overflow-hidden gap-5 shrink-0 cursor-pointer shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] rounded-3xl"
+        className={cn(
+          "card-animation aspect-video w-full max-w-[800px] overflow-hidden gap-5 shrink-0 cursor-pointer shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] rounded-3xl",
+          props.disabled && "opacity-30"
+        )}
       >
         <div
           className={cn(

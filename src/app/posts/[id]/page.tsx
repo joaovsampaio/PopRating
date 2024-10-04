@@ -86,7 +86,7 @@ const PostContent = async ({ id }: { id: string }) => {
         </section>
 
         <div className="w-full flex flex-col items-center gap-4">
-          <div className="aspect-video relative w-4/5">
+          <div className="aspect-video relative w-4/5 max-w-[650px]">
             <Image alt="" src={post?.cover || ""} fill />
           </div>
           <div className="w-4/5">
