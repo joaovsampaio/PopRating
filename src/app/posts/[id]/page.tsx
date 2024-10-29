@@ -5,7 +5,7 @@ import { StarPost } from "@/components/ui/StarRating";
 import { prisma } from "@/db";
 import DOMPurify from "isomorphic-dompurify";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/authOptions";
 import UserOptions from "@/components/ui/UserOptions";
 import { Suspense } from "react";
 import PostLoadingSkeleton from "@/components/ui/PostLoadingSkeleton";
