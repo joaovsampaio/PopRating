@@ -10,11 +10,24 @@ import SelectCategory from "@/components/ui/Select";
 import CustomToast from "@/components/ui/Toast";
 import Loading from "@/components/ui/Loading";
 import { Input } from "@/components/ui/Input";
+import { Button } from "@/components/ui/Button";
 import dynamic from "next/dynamic";
 
 const CustomEditor = dynamic(() => import("@/components/ui/CustomEditor"), {
   ssr: false,
 });
+
+/* 
+Importante:
+
+Eu não utilizo o React Query aqui por opção. Este é um projeto para demonstração e prática, 
+por isso opto por diferentes maneiras de abordar a mesma tarefa.
+
+Important:
+
+I don't use React Query here by choice. This is a project for demonstration and practice, 
+so I opt for different ways of approaching the same task.
+*/
 
 const schema = z.object({
   title: z.string().min(1, { message: "Esse Campo Deve Ser Preenchido" }),
@@ -245,13 +258,13 @@ const Page = ({ params }: { params: { id: string } }) => {
             </div>
           </fieldset>
 
-          <button
-            className="bg-primary-500 hover:bg-primary-700 text-lg flex justify-center self-center w-1/3 py-1 my-5 rounded-lg disabled:cursor-not-allowed disabled:bg-primary-800"
+          <Button
+            className="self-center w-1/3 text-lg"
             disabled={isloading}
             type="submit"
           >
             {isloading ? <Loading /> : "Editar"}
-          </button>
+          </Button>
 
           <CustomToast
             title={getValues().title}

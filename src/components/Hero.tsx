@@ -1,16 +1,32 @@
 "use client";
 
 import Image from "next/image";
-import musician from "../../public/musician.jpg";
-import actress from "../../public/actress.jpg";
-import writer from "../../public/writer.jpg";
+import musicianHero from "../../public/musician_hero.webp";
+import actressHero from "../../public/actress_hero.webp";
+import writerHero from "../../public/writer_hero.webp";
 import HeroText from "../../public/svg-hero-anim.svg";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { ChevronRight } from "lucide-react";
+import { ChevronRightIcon } from "lucide-react";
 import SidePosts from "./SidePosts";
 
 const variants = {
+  hidden: {
+    display: "none",
+    x: "-100vw",
+  },
+  visible: {
+    display: "flex",
+    x: 0,
+    transition: { type: "linear", delay: 0.1 },
+  },
+  exit: {
+    x: "-100vh",
+    transition: { ease: "linear" },
+  },
+};
+
+const variants2 = {
   hidden: {
     display: "none",
     x: "100vw",
@@ -18,11 +34,11 @@ const variants = {
   visible: {
     display: "flex",
     x: 0,
-    transition: { type: "spring", delay: 0.1 },
+    transition: { type: "linear", delay: 0.1 },
   },
   exit: {
     x: "-100vh",
-    transition: { ease: "easeInOut" },
+    transition: { ease: "linear" },
   },
 };
 
@@ -79,7 +95,7 @@ const Hero = () => {
                 setAnimStart(!animStart);
               }}
             >
-              Veja Mais <ChevronRight className="inline" />
+              Veja Mais <ChevronRightIcon className="inline" />
             </motion.button>
           </div>
         </div>
@@ -88,26 +104,26 @@ const Hero = () => {
           <Image
             className="w-1/3 border-4 border-secondary-500"
             alt="Musician"
-            src={musician}
+            src={musicianHero}
             quality={100}
           />
           <Image
             className="w-1/3 border-y-4 border-secondary-500"
             alt="Actress"
-            src={actress}
+            src={actressHero}
             quality={100}
           />
           <Image
             className="w-1/3 border-4 border-secondary-500"
             alt="Writer"
-            src={writer}
+            src={writerHero}
             quality={100}
           />
         </div>
       </motion.div>
 
       <motion.div
-        variants={variants}
+        variants={variants2}
         initial={animStart ? "visible" : "hidden"}
         animate={animStart ? "visible" : "hidden"}
         exit="exit"

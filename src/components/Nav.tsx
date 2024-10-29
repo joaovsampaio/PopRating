@@ -26,7 +26,6 @@ const Nav = () => {
               description="É necessário uma conta para fazer uma postagem."
               action={() => signIn("google")}
               actionText="Fazer Login"
-              actionButtonStyle="bg-primary-500 text-neutral-100 hover:bg-primary-700"
             >
               <a href="#">Postar</a>
             </Dialog>

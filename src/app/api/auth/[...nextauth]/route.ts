@@ -12,6 +12,12 @@ export const authOptions: AuthOptions = {
   ],
   adapter: PrismaAdapter(prisma),
   secret: process.env.SECRET,
+  callbacks: {
+    async session({ session, user }) {
+      session.user.id = user.id;
+      return session;
+    },
+  },
 };
 
 const handler = NextAuth(authOptions);

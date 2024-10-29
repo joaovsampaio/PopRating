@@ -3,7 +3,7 @@
 import { Dispatch, SetStateAction } from "react";
 import * as Toast from "@radix-ui/react-toast";
 import { cn } from "@/lib/utils";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangleIcon } from "lucide-react";
 
 type Props = {
   title: string;
@@ -35,7 +35,7 @@ function CustomToast({ title, description, open, setOpen, error }: Props) {
             title
           ) : (
             <span className="flex items-center gap-2">
-              <AlertTriangle className="h-8 w-8 text-neutral-100" />
+              <AlertTriangleIcon className="h-8 w-8 text-neutral-100" />
               Algo Deu Errado
             </span>
           )}

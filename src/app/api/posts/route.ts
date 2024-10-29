@@ -12,6 +12,7 @@ export async function GET() {
         select: { name: true },
       },
     },
+    take: 18,
   });
 
   return NextResponse.json(allPosts);

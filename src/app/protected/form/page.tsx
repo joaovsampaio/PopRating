@@ -1,6 +1,7 @@
 "use client";
 
 import * as z from "zod";
+import { useMutation } from "@tanstack/react-query";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { StarRating } from "@/components/ui/StarRating";
@@ -9,8 +10,8 @@ import SelectCategory from "@/components/ui/Select";
 import CustomToast from "@/components/ui/Toast";
 import Loading from "@/components/ui/Loading";
 import { Input } from "@/components/ui/Input";
+import { Button } from "@/components/ui/Button";
 import dynamic from "next/dynamic";
-import { useMutation } from "@tanstack/react-query";
 
 const CustomEditor = dynamic(() => import("@/components/ui/CustomEditor"), {
   ssr: false,
@@ -223,13 +224,13 @@ const Page = () => {
             </div>
           </fieldset>
 
-          <button
-            className="bg-primary-500 hover:bg-primary-700 text-lg flex justify-center self-center w-1/3 py-1 my-5 rounded-lg disabled:cursor-not-allowed disabled:bg-primary-800"
+          <Button
+            className="self-center w-1/3 text-lg"
             disabled={mutation.isPending}
             type="submit"
           >
             {mutation.isPending ? <Loading /> : "Publicar"}
-          </button>
+          </Button>
 
           <CustomToast
             title={getValues().title}

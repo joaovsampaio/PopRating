@@ -9,7 +9,20 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import UserOptions from "@/components/ui/UserOptions";
 import { Suspense } from "react";
 import PostLoadingSkeleton from "@/components/ui/PostLoadingSkeleton";
-import ErrorToFetch from "@/components/ErrorToFetch";
+import EmptyList from "@/components/ui/EmptyList";
+import { HomeIcon } from "lucide-react";
+
+/* 
+Importante:
+
+Eu não utilizo o React Query aqui por opção. Este é um projeto para demonstração e prática, 
+por isso opto por diferentes maneiras de abordar a mesma tarefa.
+
+Important:
+
+I don't use React Query here by choice. This is a project for demonstration and practice, 
+so I opt for different ways of approaching the same task.
+*/
 
 async function getPost(param: string) {
   let post;
@@ -47,7 +60,8 @@ const PostContent = async ({ id }: { id: string }) => {
     __html: DOMPurify.sanitize(post?.content || ""),
   });
 
-  if (isError) return <ErrorToFetch />;
+  if (isError)
+    return <EmptyList btnText="Voltar ao Menu" btnIcon={<HomeIcon />} />;
 
   return (
     <main className="flex-1 flex justify-center my-8">

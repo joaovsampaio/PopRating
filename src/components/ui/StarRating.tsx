@@ -1,6 +1,6 @@
 "use client";
 
-import { Star } from "lucide-react";
+import { StarIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
 type StarRatingProps = {
@@ -31,7 +31,7 @@ export const StarRating = ({ setStarRating, postRating }: StarRatingProps) => {
             onMouseLeave={() => setHover(rating)}
           >
             <span>
-              <Star
+              <StarIcon
                 className={
                   index <= (hover || rating)
                     ? "text-primary-500 fill-primary-500"
@@ -76,7 +76,7 @@ export const StarPost = ({ getRating }: StarPost) => {
         return (
           <div key={index}>
             <span>
-              <Star
+              <StarIcon
                 className={
                   index <= (hover || rating)
                     ? "text-primary-500 fill-primary-500"

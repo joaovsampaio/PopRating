@@ -5,21 +5,21 @@ import { Post } from "prisma/prisma-client";
 import { useQuery } from "@tanstack/react-query";
 import Card from "./ui/Card";
 import CardSkeleton from "./ui/CardSkeleton";
-import ErrorToFetch from "./ErrorToFetch";
 import { motion } from "framer-motion";
+import EmptyList from "./ui/EmptyList";
 
-const getTrendingPosts = cache(async () => {
-  let data = await fetch("/api/posts/trendingPosts");
-  let posts = await data.json();
+type queryPosts = {
+  trendingPosts: Post[];
+  latestPosts: Post[];
+};
 
-  return posts;
-});
+const fetchPosts = cache(async () => {
+  const [trendingPosts, latestPosts] = await Promise.all([
+    fetch("/api/posts/trendingPosts").then((res) => res.json()),
+    fetch("/api/posts/latestPosts").then((res) => res.json()),
+  ]);
 
-const getLatestPosts = cache(async () => {
-  let data = await fetch("/api/posts/latestPosts");
-  let posts = await data.json();
-
-  return posts;
+  return { trendingPosts, latestPosts };
 });
 
 const cardVariants = {
@@ -28,25 +28,15 @@ const cardVariants = {
 };
 
 const SidePosts = () => {
-  const {
-    data: trendingPosts,
-    isLoading: isLoadingTrendingPosts,
-    isError,
-  } = useQuery<Post[]>({
-    queryFn: async () => await getTrendingPosts(),
-    queryKey: ["trendingPosts"],
+  const { data, isLoading, isError, refetch } = useQuery<queryPosts>({
+    queryFn: fetchPosts,
+    queryKey: ["sidePosts"],
     retry: 5,
   });
 
-  const { data: latestPosts, isLoading: isLoadinglatestPosts } = useQuery<
-    Post[]
-  >({
-    queryFn: async () => await getLatestPosts(),
-    queryKey: ["latestPosts"],
-    retry: 5,
-  });
+  if (isError) return <EmptyList onClick={() => refetch()} />;
 
-  if (isError) return <ErrorToFetch />;
+  const { trendingPosts, latestPosts } = data || {};
 
   return (
     <div className="flex lg:flex-row lg:justify-between lg:gap-0 lg:items-start items-center flex-col gap-4">
@@ -58,7 +48,7 @@ const SidePosts = () => {
           </h2>
         </div>
 
-        {isLoadingTrendingPosts ? (
+        {isLoading ? (
           <CardSkeleton />
         ) : (
           trendingPosts?.map((item) => (
@@ -69,15 +59,13 @@ const SidePosts = () => {
               animate="visible"
               transition={{ type: "spring", duration: 0.8 }}
             >
-              <motion.div>
-                <Card
-                  link={item.id}
-                  cover={item.cover}
-                  title={item.title}
-                  date={item.date}
-                  category={item.category}
-                />
-              </motion.div>
+              <Card
+                link={item.id}
+                cover={item.cover}
+                title={item.title}
+                date={item.date}
+                category={item.category}
+              />
             </motion.div>
           ))
         )}
@@ -91,7 +79,7 @@ const SidePosts = () => {
           </h2>
         </div>
 
-        {isLoadinglatestPosts ? (
+        {isLoading ? (
           <CardSkeleton />
         ) : (
           latestPosts?.map((item) => (
@@ -103,7 +91,6 @@ const SidePosts = () => {
               transition={{ type: "spring", duration: 0.8 }}
             >
               <Card
-                key={item.id}
                 link={item.id}
                 cover={item.cover}
                 title={item.title}

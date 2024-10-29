@@ -1,13 +1,11 @@
 import React, { ReactNode } from "react";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
-import { cn } from "@/lib/utils";
+import { Button } from "./Button";
 
 type Props = {
   children: ReactNode;
   action: () => any;
   actionText: string;
-  actionButtonStyle?: string;
-  cancelTextStyle?: string;
   title: string;
   description: string;
 };
@@ -24,27 +22,16 @@ const Dialog = ({ ...props }: Props) => (
         <AlertDialog.Description className="text-neutral-800 mt-4 mb-5 text-[15px] leading-normal">
           {props.description}
         </AlertDialog.Description>
-        <div className="flex justify-end gap-[25px]">
+        <div className="flex flex-col md:flex-row justify-end gap-[25px]">
           <AlertDialog.Cancel asChild>
-            <button
-              className={cn(
-                "text-neutral-800 bg-neutral-200 hover:bg-neutral-400 focus:shadow-black inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none outline-none",
-                props.cancelTextStyle
-              )}
-            >
+            <Button className="bg-neutral-200 hover:bg-neutral-400 text-neutral-800 hover:text-neutral-900">
               Cancelar
-            </button>
+            </Button>
           </AlertDialog.Cancel>
           <AlertDialog.Action asChild>
-            <button
-              onClick={props.action}
-              className={cn(
-                "text-neutral-900 bg-error-500 hover:bg-error-600 focus:shadow-red-300 inline-flex h-[35px] items-center justify-center rounded-[4px] px-[15px] font-medium leading-none outline-none",
-                props.actionButtonStyle
-              )}
-            >
+            <Button variant={"destructive"} onClick={props.action}>
               {props.actionText}
-            </button>
+            </Button>
           </AlertDialog.Action>
         </div>
       </AlertDialog.Content>

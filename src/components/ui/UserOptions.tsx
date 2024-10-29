@@ -1,7 +1,8 @@
 "use client";
 
-import { Pencil, Trash } from "lucide-react";
+import { PencilIcon, TrashIcon } from "lucide-react";
 import Dialog from "./Dialog";
+import { Button } from "./Button";
 
 type Props = {
   id: string;
@@ -10,7 +11,7 @@ type Props = {
 const UserOptions = ({ id }: Props) => {
   const deletePost = async () => {
     await fetch(`/api/crud/${id}`, { method: "DELETE" });
-    window.location.href = "/";
+    window.location.href = "/protected/profile";
   };
 
   const editPost = async (): Promise<void> => {
@@ -26,21 +27,25 @@ const UserOptions = ({ id }: Props) => {
         action={() => deletePost()}
         actionText="Sim, deletar crítica."
       >
-        <button
+        <Button
           title="Exluir"
-          className="text-error-600 hover:bg-error-500/20 p-2 rounded-full"
+          variant={"ghost"}
+          size={"icon"}
+          className="text-error-600 hover:bg-error-500/20 hover:text-error-600 p-2 rounded-full"
         >
-          <Trash aria-hidden={true} />
-        </button>
+          <TrashIcon aria-hidden={true} />
+        </Button>
       </Dialog>
 
-      <button
+      <Button
+        variant={"ghost"}
+        size={"icon"}
         title="Editar"
         onClick={() => editPost()}
-        className="text-accent-500 hover:bg-accent-500/20 p-2 rounded-full"
+        className="text-accent-500 hover:bg-accent-500/20 hover:text-accent-500 p-2 rounded-full"
       >
-        <Pencil aria-hidden={true} />
-      </button>
+        <PencilIcon aria-hidden={true} />
+      </Button>
     </div>
   );
 };

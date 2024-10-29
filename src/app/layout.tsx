@@ -4,7 +4,6 @@ import { Poppins } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Providers from "@/components/Providers";
-import ReactQueryProvider from "@/lib/ReactQueryProvider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -26,11 +25,9 @@ export default function RootLayout({
     <html lang="pt">
       <Providers>
         <body className={poppins.className}>
-          <ReactQueryProvider>
-            <Header />
-            {children}
-            <Footer />
-          </ReactQueryProvider>
+          <Header />
+          {children}
+          <Footer />
         </body>
       </Providers>
     </html>

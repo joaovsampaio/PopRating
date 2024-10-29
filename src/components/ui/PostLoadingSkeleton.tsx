@@ -19,13 +19,16 @@ const PostLoadingSkeleton = () => {
         </div>
 
         <div className="w-full flex flex-col items-center gap-4">
-          <div className="animate-pulse bg-neutral-600 aspect-video relative w-4/5" />
+          <div className="animate-pulse bg-neutral-600 aspect-video relative w-4/5 max-w-[650px]" />
         </div>
 
-        <div className="grid grid-cols-8 gap-2 items-center w-full">
-          {Array.from({ length: 20 }, (_, i) => i + 1).map((id) => (
-            <div className="animate-pulse w-full h-4 rounded-full bg-neutral-600" />
-          ))}
+        <div className="w-full">
+          <div className="animate-pulse w-full flex flex-col gap-2">
+            <div className="h-3 bg-neutral-600 rounded-full w-48 mb-4"></div>
+            <div className="h-2 bg-neutral-600 rounded-full w-[100%]"></div>
+            <div className="h-2 bg-neutral-600 rounded-full w-[90%]"></div>
+            <div className="h-2 bg-neutral-600 rounded-full w-[85%]"></div>
+          </div>
         </div>
       </MaxWidthWrapper>
     </main>

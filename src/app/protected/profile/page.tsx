@@ -1,64 +1,82 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+"use client";
+
+import { cache } from "react";
+import Image from "next/image";
+import { useSession } from "next-auth/react";
+import { Post } from "@prisma/client";
+import { useQuery } from "@tanstack/react-query";
 import BtnLogout from "@/components/ui/BtnLogout";
 import Card from "@/components/ui/Card";
 import UserOptions from "@/components/ui/UserOptions";
-import { prisma } from "@/db";
-import { getServerSession } from "next-auth";
-import Image from "next/image";
+import Loading from "@/components/ui/Loading";
+import { PlusIcon, UserIcon } from "lucide-react";
+import ActorSpeechBalloons from "../../../../public/actor_speech_balloons.webp";
+import EmptyList from "@/components/ui/EmptyList";
+import { useRouter } from "next/navigation";
 
-async function getPosts(email: string) {
-  const posts = await prisma.post.findMany({
-    where: {
-      author: { email },
-    },
-    orderBy: { date: "desc" },
-    include: {
-      author: {
-        select: { name: true },
-      },
-    },
-  });
+const getUserPosts = cache(async () => {
+  let data = await fetch("/api/posts/userPosts");
+  let posts = await data.json();
 
   return posts;
-}
+});
 
-async function getUser(email: string) {
-  const user = await prisma.user.findUnique({
-    where: {
-      email,
-    },
+const Page = () => {
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  const {
+    data: userPosts,
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery<Post[]>({
+    queryFn: async () => await getUserPosts(),
+    queryKey: ["userPosts"],
+    retry: 5,
   });
 
-  return user;
-}
+  if (isError) return <EmptyList onClick={() => refetch()} />;
 
-const Page = async () => {
-  const session = await getServerSession(authOptions);
-
-  if (!session?.user?.email) return;
-
-  const posts = await getPosts(session.user.email);
-  const user = await getUser(session.user.email);
+  if (isLoading)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Loading />
+      </div>
+    );
 
   return (
     <div className="flex flex-col my-5 gap-5">
       <div className="flex justify-between items-center gap-5 flex-col lg:flex-row">
         <div className="flex items-center gap-2">
-          <Image
-            alt={user?.name || ""}
-            src={user?.image || ""}
-            height={50}
-            width={50}
-            className="rounded-full"
-          />
+          {!session?.user.image ? (
+            <UserIcon height={50} width={50} className="rounded-full" />
+          ) : (
+            <Image
+              alt={session.user.name || "User"}
+              src={session.user.image}
+              height={50}
+              width={50}
+              className="rounded-full"
+            />
+          )}
 
-          <p className="text-lg">{user?.name}</p>
+          <p className="text-lg">{session?.user?.name}</p>
         </div>
         <BtnLogout />
       </div>
       <div className="h-[1px] w-full bg-accent-500 my-3" />
+      {userPosts?.length === 0 && (
+        <EmptyList
+          errorText="Você Ainda Não Postou"
+          srcImage={ActorSpeechBalloons}
+          onClick={() => router.push("/protected/form")}
+          btnText="Crie Uma Review"
+          btnIcon={<PlusIcon />}
+        />
+      )}
       <div className="grid grid-cols-1 lg:grid-cols-3 w-full gap-5">
-        {posts.map((item) => (
+        {userPosts?.map((item) => (
           <div className="flex flex-col gap-2" key={item.id}>
             <Card
               link={item.id}

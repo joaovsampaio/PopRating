@@ -1,15 +1,15 @@
 "use client";
 
-import ErrorToFetch from "@/components/ErrorToFetch";
+import { cache } from "react";
+import { Post } from "@prisma/client";
+import { useQuery } from "@tanstack/react-query";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import Card from "@/components/ui/Card";
 import CardSkeleton from "@/components/ui/CardSkeleton";
-import { Post } from "@prisma/client";
-import { useQuery } from "@tanstack/react-query";
-import { cache } from "react";
+import EmptyList from "@/components/ui/EmptyList";
 
 const getAllPosts = cache(async () => {
-  let data = await fetch("/api/posts/allPosts");
+  let data = await fetch("/api/posts");
   let posts = await data.json();
 
   return posts;
@@ -20,13 +20,14 @@ const Page = () => {
     data: allPosts,
     isLoading,
     isError,
+    refetch,
   } = useQuery<Post[]>({
     queryFn: async () => await getAllPosts(),
     queryKey: ["allPosts"],
     retry: 5,
   });
 
-  if (isError) return <ErrorToFetch />;
+  if (isError) return <EmptyList onClick={() => refetch()} />;
 
   return (
     <main>

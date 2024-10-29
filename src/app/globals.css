@@ -63,7 +63,7 @@
 }
 
 .home-bg {
-  background-image: url("/bg.jpeg");
+  background-image: url("/bg.webp");
   background-size: cover;
   background-position: bottom;
   background-attachment: fixed;
