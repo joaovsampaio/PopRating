@@ -10,7 +10,7 @@ export async function POST(request: Request) {
   try {
     const posts = await prisma.post.create({
       data: {
-        author: { connect: { email: session?.user?.email } },
+        author: { connect: { id: session?.user?.id } },
         ...json,
       },
     });
